@@ -1,6 +1,6 @@
 //
-//  WKBaseScriptMessageHandler.swift
-//  FourPlatform
+//  OLScriptMessageManager.swift
+//  OLScriptMessage
 //
 //  Created by LiTengFei on 2017/8/16.
 //  Copyright © 2017年 Winkind. All rights reserved.
@@ -15,14 +15,12 @@ protocol WKSCriptCallBackable {
 /**
  交互支持delegate
  */
-public protocol OLBaseScriptMessageHandlerDelegate: NSObjectProtocol {
+public protocol OLScriptMessageManagerDelegate: NSObjectProtocol {
     var webViewContent:WKWebView { get }
     var contentViewController: UIViewController? { get }
 }
 
-public class OLScriptMessageHandler: NSObject {
-    
-    public static let prefix:String = "window.olaf"
+public class OLScriptMessageManager: NSObject {
 
     var context: OLScriptMessageContext?
 
@@ -51,16 +49,16 @@ public class OLScriptMessageHandler: NSObject {
         self.operations.removeValue(forKey: operation.scriptMessageName)
     }
 
-    public init(delegate:OLBaseScriptMessageHandlerDelegate) {
+    public init(delegate:OLScriptMessageManagerDelegate) {
         self.delegate = delegate
         self.web = delegate.webViewContent
     }
 
-    public var delegate:OLBaseScriptMessageHandlerDelegate?
+    public var delegate:OLScriptMessageManagerDelegate?
 
 }
 
-extension OLScriptMessageHandler: WKScriptMessageHandler {
+extension OLScriptMessageManager: WKScriptMessageHandler {
 
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
 
@@ -79,7 +77,7 @@ extension OLScriptMessageHandler: WKScriptMessageHandler {
     }
 }
 
-extension OLScriptMessageHandler: WKSCriptCallBackable {
+extension OLScriptMessageManager: WKSCriptCallBackable {
 
     func callback(_ name: String, response: [String: Any]?) {
         var object: String = ""
@@ -114,7 +112,7 @@ extension WKUserContentController {
         return script
     }
 
-    public func add(_ scriptMessageHandler: OLScriptMessageHandler) {
+    public func add(_ scriptMessageHandler: OLScriptMessageManager) {
         //加载Common JavaScript
         if let script = self.loadCommonKit() {
             self.addUserScript(script)

@@ -112,7 +112,7 @@ open class OLWebViewController: UIViewController {
     }
 }
 
-extension OLWebViewController:OLBaseScriptMessageHandlerDelegate {
+extension OLWebViewController:OLScriptMessageManagerDelegate {
 
     public var webViewContent: WKWebView {
         return self.webView

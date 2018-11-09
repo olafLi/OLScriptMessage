@@ -9,9 +9,9 @@
 import UIKit
 import WebKit
 
-public class OLDefaultScriptMessageHandler: OLScriptMessageHandler {
+public class OLDefaultScriptMessageHandler: OLScriptMessageManager {
 
-    public override init(delegate: OLBaseScriptMessageHandlerDelegate) {
+    public override init(delegate: OLScriptMessageManagerDelegate) {
         super.init(delegate: delegate)
         register(operation: NavigationScriptMessageOperation())
     }
