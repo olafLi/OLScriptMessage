@@ -133,7 +133,7 @@ extension OLWebViewController:OLBaseScriptMessageHandlerDelegate {
         return self.webView
     }
 
-    public var contentViewController: UIViewController {
+    public var contentViewController: UIViewController? {
         return self
     }
 

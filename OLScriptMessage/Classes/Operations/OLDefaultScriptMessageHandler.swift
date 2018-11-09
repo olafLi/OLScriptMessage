@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-public class OLDefaultScriptMessageHandler: OLBaseScriptMessageHandler {
+public class OLDefaultScriptMessageHandler: OLScriptMessageHandler {
 
     public override init(delegate: OLBaseScriptMessageHandlerDelegate) {
         super.init(delegate: delegate)

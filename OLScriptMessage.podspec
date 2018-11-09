@@ -15,7 +15,7 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/olafLi/OLScriptMessage.git', :tag => s.version.to_s }
   s.ios.deployment_target = '9.0'
 
-  s.source_files = 'OLScriptMessage/Classes/Core/*' , 'OLScriptMessage/Classes/Operations/*'
+  s.source_files = 'OLScriptMessage/Classes/**/*'
   
   s.resource_bundles = {
     'OLScriptMessage' => ['OLScriptMessage/Assets/*.*']

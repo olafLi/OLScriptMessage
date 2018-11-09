@@ -10,42 +10,47 @@ import UIKit
 import WebKit
 
 protocol WKSCriptCallBackable {
-    var callbackName: String { get set }
     func callback(_ name: String, response: [String: Any]?)
 }
-
+/**
+ 交互支持delegate
+ */
 public protocol OLBaseScriptMessageHandlerDelegate: NSObjectProtocol {
     var webViewContent:WKWebView { get }
-    var contentViewController: UIViewController { get }
+    var contentViewController: UIViewController? { get }
 }
 
-public class OLBaseScriptMessageHandler: NSObject {
+public class OLScriptMessageHandler: NSObject {
 
     var context: OLScriptMessageContext?
-    var completion: ScriptMessageContextCompletion?
 
-    fileprivate var callback: String = ""
-
-    var contentController: UIViewController
-    var web: WKWebView
-
-    var operations: [String: ScriptMessageOperator] = [:]
-    /* 注册交互接口*/
-    func register(operation: ScriptMessageOperator) {
-        var operation_t = operation
-        operation_t.contentController = self.contentController
-        self.operations[operation_t.scriptMessageName] = operation_t
+    var contentController: UIViewController? {
+        if let delegate = self.delegate {
+            return delegate.contentViewController
+        }
+        return nil
     }
 
-    public init(_ content: UIViewController) {
-        self.contentController = content
-        self.web = WKWebView()
-        super.init()
+    var web: WKWebView
+
+    //注册的交互接口
+    private(set) var operations: [String: ScriptMessageOperator] = [:]
+
+    /**
+     注册交互接口
+     */
+    func register(operation: ScriptMessageOperator) {
+        self.operations[operation.scriptMessageName] = operation
+    }
+    /**
+     注销交互接口
+     */
+    func unregister(operation:ScriptMessageOperator){
+        self.operations.removeValue(forKey: operation.scriptMessageName)
     }
 
     public init(delegate:OLBaseScriptMessageHandlerDelegate) {
         self.delegate = delegate
-        self.contentController = delegate.contentViewController
         self.web = delegate.webViewContent
     }
 
@@ -53,7 +58,7 @@ public class OLBaseScriptMessageHandler: NSObject {
 
 }
 
-extension OLBaseScriptMessageHandler: WKScriptMessageHandler {
+extension OLScriptMessageHandler: WKScriptMessageHandler {
 
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
 
@@ -72,16 +77,7 @@ extension OLBaseScriptMessageHandler: WKScriptMessageHandler {
     }
 }
 
-extension OLBaseScriptMessageHandler: WKSCriptCallBackable {
-
-    var callbackName: String {
-        get {
-            return self.callback
-        }
-        set {
-            self.callback = callbackName
-        }
-    }
+extension OLScriptMessageHandler: WKSCriptCallBackable {
 
     func callback(_ name: String, response: [String: Any]?) {
         var object: String = ""
@@ -102,7 +98,7 @@ extension OLBaseScriptMessageHandler: WKSCriptCallBackable {
 
 extension WKUserContentController {
 
-    public func add(_ scriptMessageHandler: OLBaseScriptMessageHandler) {
+    public func add(_ scriptMessageHandler: OLScriptMessageHandler) {
         for (name, operation) in scriptMessageHandler.operations {
             self.addUserScript(operation.userScript)
             self.add(scriptMessageHandler, name: name)

@@ -13,7 +13,7 @@ public typealias ExecuteCompletion = (_ context: OLScriptMessageContext) -> Void
 
 public protocol ScriptMessageOperator {
 
-    var contentController: UIViewController? { get set }
+    var contentController: UIViewController? { get }
 
     var executeCompletion: ExecuteCompletion? { get set }
     var context: OLScriptMessageContext? { get set }
@@ -33,12 +33,13 @@ public protocol ScriptMessageOperator {
 
 public class OLScriptMessageOperation: NSObject, ScriptMessageOperator {
 
-    public var contentController: UIViewController?
+    public var contentController: UIViewController? {
+        return self.context?.viewController
+    }
 
     public func execute(_ context: OLScriptMessageContext, scriptMessageName: String, executeCompletion: @escaping (OLScriptMessageContext) -> Void) {
         self.context = context
         self.executeCompletion = executeCompletion
-        self.contentController = context.viewController
     }
 
     required init(scriptMessageName: String) {

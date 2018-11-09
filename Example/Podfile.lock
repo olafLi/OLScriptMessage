@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  OLScriptMessage: aeb3c18aec7ce5b36941a4a007c1eff3bc8772a8
+  OLScriptMessage: dc8be4dcc85a7a853d7f7c02adfac147d1416f82
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
 
 PODFILE CHECKSUM: b483041a15b5ff285e193bf313c4234c94f555b1

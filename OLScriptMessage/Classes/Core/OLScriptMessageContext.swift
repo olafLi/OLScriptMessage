@@ -9,22 +9,11 @@
 import UIKit
 import WebKit
 
-protocol JSScriptRunable {
-
-}
-/// 脚本交互支持
-protocol ScriptMessageContextable {
-    /// 交互上下文
-    var context: OLScriptMessageContext? { get set }
-    var completion: ScriptMessageContextCompletion? { get set }
-}
-
-typealias ScriptMessageContextCompletion = (_ context: OLScriptMessageContext) -> Void
 
 /// js 脚本交互参数
 public class OLScriptMessageContext {
 
-    var params: [String: Any]
+    var params: [String: Any] = [:]
     var functionName: String?
     var callback: String?
     var viewController: UIViewController?
@@ -33,7 +22,7 @@ public class OLScriptMessageContext {
 
         self.response = [:]
 
-        guard let maps: [String: AnyObject] = message.body as? [String: AnyObject] else {
+        guard let maps = message.body as? [String: AnyObject] else {
             self.callback = ""
             self.functionName = ""
             self.params = [:]
