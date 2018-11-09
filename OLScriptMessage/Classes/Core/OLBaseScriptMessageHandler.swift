@@ -90,13 +90,11 @@ extension OLBaseScriptMessageHandler: WKSCriptCallBackable {
                 let data = try JSONSerialization.data(withJSONObject: resp, options: JSONSerialization.WritingOptions.prettyPrinted)
                 object = NSString(data: data, encoding: String.Encoding.utf8.rawValue)! as String
                 object = object.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-
             } catch {
                
             }
         }
         let jsString = "JKEventHandler.callBack('\(name)',\(object))"
-        print(jsString)
         self.web.evaluateJavaScript(jsString, completionHandler: nil)
 
     }

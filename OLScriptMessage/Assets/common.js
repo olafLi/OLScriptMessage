@@ -3,7 +3,6 @@ Object.assign(window.cci , {})
 var JKEventHandler = {
     bindCallBack: function (fn, func_name) {
         var message = {};
-
         message["func_name"] = func_name
 
         for (var index = 0; index < fn.arguments.length; index++) {
