@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import OLScriptMessage
 
-class ViewController: OLDefaultWebViewController {
+class ViewController: OLWebViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

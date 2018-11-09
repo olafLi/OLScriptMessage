@@ -21,6 +21,8 @@ public protocol OLBaseScriptMessageHandlerDelegate: NSObjectProtocol {
 }
 
 public class OLScriptMessageHandler: NSObject {
+    
+    public static let prefix:String = "window.olaf"
 
     var context: OLScriptMessageContext?
 
@@ -87,7 +89,7 @@ extension OLScriptMessageHandler: WKSCriptCallBackable {
                 object = NSString(data: data, encoding: String.Encoding.utf8.rawValue)! as String
                 object = object.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             } catch {
-               
+
             }
         }
         let jsString = "JKEventHandler.callBack('\(name)',\(object))"
@@ -98,10 +100,34 @@ extension OLScriptMessageHandler: WKSCriptCallBackable {
 
 extension WKUserContentController {
 
+    private var commonJSBundle:URL? {
+        guard let url = Bundle(for: OLScriptMessageContext.self).url(forResource: "OLScriptMessage", withExtension: "bundle") else { return nil }
+        return Bundle(url: url)?.url(forResource: "common", withExtension: "js")
+    }
+
+    private func loadCommonKit() -> WKUserScript? {
+        guard let commonJSURL = self.commonJSBundle , let data = NSData(contentsOf: commonJSURL) else { return nil}
+
+        var jsString: String = NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue)! as String
+        jsString = jsString.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
+        var script = WKUserScript(source: jsString, injectionTime: WKUserScriptInjectionTime.atDocumentStart, forMainFrameOnly: false)
+        return script
+    }
+
     public func add(_ scriptMessageHandler: OLScriptMessageHandler) {
+        //加载Common JavaScript
+        if let script = self.loadCommonKit() {
+            self.addUserScript(script)
+        }
+
         for (name, operation) in scriptMessageHandler.operations {
-            self.addUserScript(operation.userScript)
+            if let userScript = operation.userScript {
+                self.addUserScript(userScript)
+            }
             self.add(scriptMessageHandler, name: name)
         }
     }
+
+
 }
+

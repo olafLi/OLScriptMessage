@@ -44,23 +44,8 @@ open class OLWebViewController: UIViewController {
         return webView
     }()
 
-    private var commonJSBundle:URL? {
-        guard let url = Bundle(for: OLWebViewController.self).url(forResource: "OLScriptMessage", withExtension: "bundle") else { return nil }
-        return Bundle(url: url)?.url(forResource: "common", withExtension: "js")
-    }
-
     lazy var userContentController: WKUserContentController = {
-        let controller = WKUserContentController()
-
-        guard let commonJSURL = self.commonJSBundle else { return controller }
-
-        if let data = NSData(contentsOf: commonJSURL) {
-            var jsString: String = NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue)! as String
-            jsString = jsString.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
-            var script = WKUserScript(source: jsString, injectionTime: WKUserScriptInjectionTime.atDocumentStart, forMainFrameOnly: false)
-            controller.addUserScript(script)
-        }
-        return controller
+        return WKUserContentController()
     }()
 
     override open func viewDidLoad() {
