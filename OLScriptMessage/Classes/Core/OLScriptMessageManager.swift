@@ -20,9 +20,11 @@ public protocol OLScriptMessageManagerDelegate: NSObjectProtocol {
     var contentViewController: UIViewController? { get }
 }
 
-public class OLScriptMessageManager: NSObject {
 
-    var context: OLScriptMessageContext?
+/**
+ 注册的交互结构管理器
+ */
+open class OLScriptMessageManager: NSObject {
 
     var contentController: UIViewController? {
         if let delegate = self.delegate {
@@ -39,13 +41,13 @@ public class OLScriptMessageManager: NSObject {
     /**
      注册交互接口
      */
-    func register(operation: ScriptMessageOperator) {
+    public func register(operation: ScriptMessageOperator) {
         self.operations[operation.scriptMessageName] = operation
     }
     /**
      注销交互接口
      */
-    func unregister(operation:ScriptMessageOperator){
+    public func unregister(operation:ScriptMessageOperator){
         self.operations.removeValue(forKey: operation.scriptMessageName)
     }
 
@@ -54,20 +56,26 @@ public class OLScriptMessageManager: NSObject {
         self.web = delegate.webViewContent
     }
 
-    public var delegate:OLScriptMessageManagerDelegate?
+    private var delegate:OLScriptMessageManagerDelegate?
 
 }
 
 extension OLScriptMessageManager: WKScriptMessageHandler {
 
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-
+        //根据message 创建 接口交互上下文
         let context = OLScriptMessageContext(message)
-
+        //设置上下文操作 viewController
         context.viewController = self.contentController
-        self.context = context
 
-        guard let operation = operations[message.name] else { return }
+        //如果交互接口已经注册 执行操作  否则
+        guard let operation = operations[message.name] else {
+            #if DEBUG
+            assertionFailure("operation named \(message.name) is not registed . please check code and register operation with \(message.name)")
+            #endif
+            print("operation named \(message.name) is not registed . please check code and register operation with \(message.name)")
+            return
+        }
         var operation_temp = operation
         let executeCompletion: ExecuteCompletion = { context in
             context.send(self)
@@ -79,7 +87,7 @@ extension OLScriptMessageManager: WKScriptMessageHandler {
 
 extension OLScriptMessageManager: WKSCriptCallBackable {
 
-    func callback(_ name: String, response: [String: Any]?) {
+    internal func callback(_ name: String, response: [String: Any]?) {
         var object: String = ""
         if let resp = response {
             do {
@@ -94,38 +102,5 @@ extension OLScriptMessageManager: WKSCriptCallBackable {
         self.web.evaluateJavaScript(jsString, completionHandler: nil)
 
     }
-}
-
-extension WKUserContentController {
-
-    private var commonJSBundle:URL? {
-        guard let url = Bundle(for: OLScriptMessageContext.self).url(forResource: "OLScriptMessage", withExtension: "bundle") else { return nil }
-        return Bundle(url: url)?.url(forResource: "common", withExtension: "js")
-    }
-
-    private func loadCommonKit() -> WKUserScript? {
-        guard let commonJSURL = self.commonJSBundle , let data = NSData(contentsOf: commonJSURL) else { return nil}
-
-        var jsString: String = NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue)! as String
-        jsString = jsString.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
-        var script = WKUserScript(source: jsString, injectionTime: WKUserScriptInjectionTime.atDocumentStart, forMainFrameOnly: false)
-        return script
-    }
-
-    public func add(_ scriptMessageHandler: OLScriptMessageManager) {
-        //加载Common JavaScript
-        if let script = self.loadCommonKit() {
-            self.addUserScript(script)
-        }
-
-        for (name, operation) in scriptMessageHandler.operations {
-            if let userScript = operation.userScript {
-                self.addUserScript(userScript)
-            }
-            self.add(scriptMessageHandler, name: name)
-        }
-    }
-
-
 }
 

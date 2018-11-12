@@ -18,6 +18,7 @@ class NavigationScriptMessageOperation: OLScriptMessageOperation {
     override func execute(_ context: OLScriptMessageContext, scriptMessageName: String, executeCompletion: @escaping (OLScriptMessageContext) -> Void) {
         super.execute(context, scriptMessageName: scriptMessageName, executeCompletion: executeCompletion)
 
+        self.contentController?.navigationController?.popViewController(animated: true)
 
     }
 }
