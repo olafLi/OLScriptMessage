@@ -1,9 +1,16 @@
 PODS:
-  - OLScriptMessage (0.1.0)
+  - OLScriptMessage (0.1.0):
+    - OLScriptMessage/Authorization (= 0.1.0)
+    - OLScriptMessage/Media (= 0.1.0)
+    - OLScriptMessage/Navigation (= 0.1.0)
+  - OLScriptMessage/Authorization (0.1.0)
+  - OLScriptMessage/Media (0.1.0)
+  - OLScriptMessage/Navigation (0.1.0)
   - SnapKit (4.0.1)
 
 DEPENDENCIES:
   - OLScriptMessage (from `../`)
+  - OLScriptMessage/Navigation (from `../`)
   - SnapKit
 
 SPEC REPOS:
@@ -15,9 +22,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  OLScriptMessage: dc8be4dcc85a7a853d7f7c02adfac147d1416f82
+  OLScriptMessage: cad6426fef46c6af94c287274b0de91484298f48
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
 
-PODFILE CHECKSUM: b483041a15b5ff285e193bf313c4234c94f555b1
+PODFILE CHECKSUM: cf0e069c97ebbd17fb02b47aa1bd338153eabadb
 
 COCOAPODS: 1.5.3

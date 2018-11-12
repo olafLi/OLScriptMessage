@@ -5,8 +5,10 @@ use_frameworks!
 platform :ios, '9.0'
 
 target 'OLScriptMessage_Example' do
+
   pod 'OLScriptMessage', :path => '../'
-  
+  pod 'OLScriptMessage/Navigation', :path => '../'
+
   pod 'SnapKit'
 
   target 'OLScriptMessage_Tests' do
