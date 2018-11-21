@@ -33,7 +33,13 @@ open class OLScriptMessageManager: NSObject {
         return nil
     }
 
-    var web: WKWebView
+    var web: WKWebView? {
+        assert(delegate != nil)
+        if let delegate = delegate {
+            return delegate.webViewContent
+        }
+        return nil
+    }
 
     //注册的交互接口
     private(set) var operations: [String: ScriptMessageOperator] = [:]
@@ -42,6 +48,7 @@ open class OLScriptMessageManager: NSObject {
      注册交互接口
      */
     public func register(operation: ScriptMessageOperator) {
+        print("\(operation.scriptMessageName)")
         self.operations[operation.scriptMessageName] = operation
     }
     /**
@@ -53,10 +60,43 @@ open class OLScriptMessageManager: NSObject {
 
     public init(delegate:OLScriptMessageManagerDelegate) {
         self.delegate = delegate
-        self.web = delegate.webViewContent
     }
 
-    private var delegate:OLScriptMessageManagerDelegate?
+    public override init() {
+        super.init()
+    }
+
+    public var delegate:OLScriptMessageManagerDelegate? = nil
+    //共用OLScriptMessageManager
+    public static let shared = OLScriptMessageManager()
+
+    public func autoSearchAndRegisterOperations(){
+
+        var count:UInt32 = 0
+        var result:[String] = []
+
+        guard let classes = objc_copyClassList(&count) else { return }
+
+        for index in 0..<count {
+            let someClass:AnyClass = classes[Int(index)]
+
+            guard let superClass = class_getSuperclass(someClass),someClass is OLScriptMessageOperation.Type else {
+                continue
+            }
+            //
+            guard let cls = someClass as? OLScriptMessageOperation.Type else { continue }
+            //operation 是否支持自动注册
+            guard cls.autoRegisterable else { continue }
+            //如果 operations  设置了 register manager 设置为 此 manager 注册到当前 manager 中
+            //否则执行operation  默认注册方法 defaultRegister()
+            if cls.registedManager == self {
+                self.register(operation: cls.init())
+            } else {
+                cls.defaultRegister()
+            }
+
+        }
+    }
 
 }
 
@@ -99,7 +139,9 @@ extension OLScriptMessageManager: WKSCriptCallBackable {
             }
         }
         let jsString = "JKEventHandler.callBack('\(name)',\(object))"
-        self.web.evaluateJavaScript(jsString, completionHandler: nil)
+        if let web = self.web {
+            web.evaluateJavaScript(jsString, completionHandler: nil)
+        }
 
     }
 }

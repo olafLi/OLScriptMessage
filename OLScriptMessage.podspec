@@ -20,7 +20,7 @@ TODO: Add long description of the pod here.
   s.resource_bundles = {
     'OLScriptMessage' => ['OLScriptMessage/Assets/*.*']
   }
-
+  s.dependency 'SwiftyLoad'
   s.subspec 'Navigation' do |spec|
       spec.source_files = 'OLScriptMessage/Classes/FuncModule/Navigation/**/*'
   end

@@ -48,12 +48,17 @@ open class OLWebViewController: UIViewController {
         return WKUserContentController()
     }()
 
+    let scriptMessageManager = OLScriptMessageManager.shared
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         self.edgesForExtendedLayout = UIRectEdge.all
 
-        userContentController.add(OLDefaultScriptMessageHandler(delegate: self))
+        scriptMessageManager.delegate = self
+        scriptMessageManager.autoSearchAndRegisterOperations()
+
+//        userContentController.add(OLDefaultScriptMessageHandler(delegate: self))
 
         startLoadWebContent()
     }

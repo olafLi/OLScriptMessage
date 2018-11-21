@@ -8,10 +8,10 @@
 
 import UIKit
 
-class NavigationScriptMessageOperation: OLScriptMessageOperation {
+@objc class NavigationScriptMessageOperation: OLScriptMessageOperation {
 
-    convenience init() {
-        self.init(scriptMessageName: "nav_backToRoot")
+    override required init() {
+        super.init(scriptMessageName: "nav_backToRoot")
         scriptMessageName = "nav_backToRoot"
     }
 

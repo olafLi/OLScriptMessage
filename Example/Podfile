@@ -4,6 +4,9 @@ inhibit_all_warnings!
 use_frameworks!
 platform :ios, '9.0'
 
+source 'https://git.citycloud.com.cn:3000/litengfei_winkind-tech.com/WKSpecs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
 target 'OLScriptMessage_Example' do
 
   pod 'OLScriptMessage', :path => '../'

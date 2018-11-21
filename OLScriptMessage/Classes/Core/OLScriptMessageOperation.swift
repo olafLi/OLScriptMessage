@@ -30,8 +30,17 @@ public protocol ScriptMessageOperator {
     func execute(_ context: OLScriptMessageContext, scriptMessageName: String, executeCompletion: @escaping ExecuteCompletion)
 
 }
+/*
+ Operation
+ 自注册协议
+ */
+public protocol ScriptMessageRegistable {
+    static var autoRegisterable:Bool { get }
+    static var registedManager:OLScriptMessageManager? { get }
+    static func defaultRegister()
+}
 
-public class OLScriptMessageOperation: NSObject, ScriptMessageOperator {
+@objc open class OLScriptMessageOperation: NSObject, ScriptMessageOperator {
 
     public var contentController: UIViewController? {
         return self.context?.viewController
@@ -42,7 +51,11 @@ public class OLScriptMessageOperation: NSObject, ScriptMessageOperator {
         self.executeCompletion = executeCompletion
     }
 
-    required init(scriptMessageName: String) {
+    public required override init() {
+        super.init()
+    }
+
+    @objc public init(scriptMessageName: String) {
         self.scriptMessageName = scriptMessageName
     }
 
@@ -66,7 +79,6 @@ public class OLScriptMessageOperation: NSObject, ScriptMessageOperator {
         """
         return source.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
     }
-
 }
 
 
@@ -87,4 +99,24 @@ extension OLScriptMessageOperation {
 
         return WKUserScript(source: source, injectionTime: WKUserScriptInjectionTime.atDocumentStart, forMainFrameOnly: true)
     }
+
 }
+
+extension OLScriptMessageOperation : ScriptMessageRegistable {
+
+    public static func defaultRegister() {
+        let registerManager = self.registedManager ?? OLScriptMessageManager.shared
+        registerManager.register(operation: self.init())
+        print("\(type(of:registerManager).description()) register operation:\(type(of:self)) and \(self.init().scriptMessageName)")
+    }
+
+    public class var autoRegisterable: Bool {
+        return true
+    }
+
+    public class var registedManager: OLScriptMessageManager? {
+        return nil
+    }
+
+}
+
