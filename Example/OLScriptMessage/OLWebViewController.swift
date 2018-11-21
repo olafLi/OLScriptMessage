@@ -49,7 +49,7 @@ open class OLWebViewController: UIViewController {
     }()
 
     let scriptMessageManager = OLScriptMessageManager.shared
-    
+
     override open func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
@@ -117,7 +117,7 @@ open class OLWebViewController: UIViewController {
     }
 }
 
-extension OLWebViewController:OLScriptMessageManagerDelegate {
+extension OLWebViewController: OLScriptMessageManagerDelegate {
 
     public var webViewContent: WKWebView {
         return self.webView
@@ -155,21 +155,15 @@ extension OLWebViewController: WKUIDelegate, WKNavigationDelegate {
 
         adjustWebViewScrollInserts()
 
-
     }
 
     public func webView(_ webView: WKWebView, didFail navigation: WKNavigation, withError error: Error) {
 
-
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-
-
-
 
     }
 
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation, withError error: Error) {
-
 
     }
 

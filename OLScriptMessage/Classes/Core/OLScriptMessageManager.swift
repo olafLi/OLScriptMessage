@@ -16,15 +16,84 @@ protocol WKSCriptCallBackable {
  交互支持delegate
  */
 public protocol OLScriptMessageManagerDelegate: NSObjectProtocol {
-    var webViewContent:WKWebView { get }
+    var webViewContent: WKWebView { get }
     var contentViewController: UIViewController? { get }
 }
-
 
 /**
  注册的交互结构管理器
  */
 open class OLScriptMessageManager: NSObject {
+
+    //注册的交互接口
+    private(set) var operations: [String: ScriptMessageOperator] = [:]
+
+    /**
+     注册交互接口
+     */
+    public func register(operation: ScriptMessageOperator) {
+        self.operations[operation.scriptMessageName] = operation
+    }
+    /**
+     注销交互接口
+     */
+    public func unregister(operation: ScriptMessageOperator) {
+        self.operations.removeValue(forKey: operation.scriptMessageName)
+    }
+
+    public init(delegate: OLScriptMessageManagerDelegate) {
+        self.delegate = delegate
+    }
+
+    public override init() {
+        super.init()
+    }
+    /**
+     delegate
+     **/
+    public var delegate: OLScriptMessageManagerDelegate?
+    /*
+     共用OLScriptMessageManager
+     **/
+    public static let shared = OLScriptMessageManager()
+    /**
+     自动扫描所有OLScriptMessageOperation 的子类 operation
+     并将其注册到配置的 scriptMessageManager 中， 如果配置的manager 为 nil 则执行 OLScriptMessageOperation 中的 defaultRegister 方法
+     defaultRegister 方法 默认注册到 OLScriptMessageOperation.shared 实例中去
+     ***/
+    public func autoSearchAndRegisterOperations() {
+
+        var count: UInt32 = 0
+        var result: [String] = []
+
+        guard let classes = objc_copyClassList(&count) else { return }
+
+        for index in 0..<count {
+            let someClass: AnyClass = classes[Int(index)]
+
+            guard let superClass = class_getSuperclass(someClass), someClass is OLScriptMessageOperation.Type else {
+                continue
+            }
+            //
+            guard let cls = someClass as? OLScriptMessageOperation.Type else { continue }
+            //operation 是否支持自动注册
+            guard cls.autoRegisterable else { continue }
+            //如果 operations  设置了 register manager 设置为 此 manager 注册到当前 manager 中
+            //否则执行operation  默认注册方法 defaultRegister()
+
+            //fix 这里逻辑设计不是很友好  以后有好的方法再改进
+            if cls.registedManager == self {
+                self.register(operation: cls.init())
+            } else {
+                cls.defaultRegister()
+            }
+
+        }
+    }
+
+}
+
+extension OLScriptMessageManager {
 
     var contentController: UIViewController? {
         if let delegate = self.delegate {
@@ -40,64 +109,6 @@ open class OLScriptMessageManager: NSObject {
         }
         return nil
     }
-
-    //注册的交互接口
-    private(set) var operations: [String: ScriptMessageOperator] = [:]
-
-    /**
-     注册交互接口
-     */
-    public func register(operation: ScriptMessageOperator) {
-        print("\(operation.scriptMessageName)")
-        self.operations[operation.scriptMessageName] = operation
-    }
-    /**
-     注销交互接口
-     */
-    public func unregister(operation:ScriptMessageOperator){
-        self.operations.removeValue(forKey: operation.scriptMessageName)
-    }
-
-    public init(delegate:OLScriptMessageManagerDelegate) {
-        self.delegate = delegate
-    }
-
-    public override init() {
-        super.init()
-    }
-
-    public var delegate:OLScriptMessageManagerDelegate? = nil
-    //共用OLScriptMessageManager
-    public static let shared = OLScriptMessageManager()
-
-    public func autoSearchAndRegisterOperations(){
-
-        var count:UInt32 = 0
-        var result:[String] = []
-
-        guard let classes = objc_copyClassList(&count) else { return }
-
-        for index in 0..<count {
-            let someClass:AnyClass = classes[Int(index)]
-
-            guard let superClass = class_getSuperclass(someClass),someClass is OLScriptMessageOperation.Type else {
-                continue
-            }
-            //
-            guard let cls = someClass as? OLScriptMessageOperation.Type else { continue }
-            //operation 是否支持自动注册
-            guard cls.autoRegisterable else { continue }
-            //如果 operations  设置了 register manager 设置为 此 manager 注册到当前 manager 中
-            //否则执行operation  默认注册方法 defaultRegister()
-            if cls.registedManager == self {
-                self.register(operation: cls.init())
-            } else {
-                cls.defaultRegister()
-            }
-
-        }
-    }
-
 }
 
 extension OLScriptMessageManager: WKScriptMessageHandler {
@@ -145,4 +156,3 @@ extension OLScriptMessageManager: WKSCriptCallBackable {
 
     }
 }
-

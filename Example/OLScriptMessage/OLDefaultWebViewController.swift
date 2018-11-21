@@ -16,8 +16,5 @@ class OLDefaultWebViewController: OLWebViewController {
 
         // Do any additional setup after loading the view.
     }
-    
-
-
 
 }

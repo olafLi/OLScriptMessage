@@ -35,8 +35,8 @@ public protocol ScriptMessageOperator {
  自注册协议
  */
 public protocol ScriptMessageRegistable {
-    static var autoRegisterable:Bool { get }
-    static var registedManager:OLScriptMessageManager? { get }
+    static var autoRegisterable: Bool { get }
+    static var registedManager: OLScriptMessageManager? { get }
     static func defaultRegister()
 }
 
@@ -81,7 +81,6 @@ public protocol ScriptMessageRegistable {
     }
 }
 
-
 extension OLScriptMessageOperation {
 
     public var defaultUserScript: WKUserScript? {
@@ -102,12 +101,12 @@ extension OLScriptMessageOperation {
 
 }
 
-extension OLScriptMessageOperation : ScriptMessageRegistable {
+extension OLScriptMessageOperation: ScriptMessageRegistable {
 
     public static func defaultRegister() {
         let registerManager = self.registedManager ?? OLScriptMessageManager.shared
         registerManager.register(operation: self.init())
-        print("\(type(of:registerManager).description()) register operation:\(type(of:self)) and \(self.init().scriptMessageName)")
+        print("\(type(of: registerManager).description()) register operation:\(type(of: self)) and \(self.init().scriptMessageName)")
     }
 
     public class var autoRegisterable: Bool {
@@ -119,4 +118,3 @@ extension OLScriptMessageOperation : ScriptMessageRegistable {
     }
 
 }
-

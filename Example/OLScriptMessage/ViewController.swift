@@ -13,7 +13,7 @@ class ViewController: OLWebViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -22,4 +22,3 @@ class ViewController: OLWebViewController {
     }
 
 }
-

@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 
 public class OLNavigationScriptMessageManager: OLScriptMessageManager {
-    
+
     public override init(delegate: OLScriptMessageManagerDelegate) {
         super.init(delegate: delegate)
         register(operation: NavigationScriptMessageOperation())
