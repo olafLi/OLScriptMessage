@@ -1,4 +1,4 @@
-Object.assign(window.ios , {})
+window.cci = {}
 
 var JKEventHandler = {
     bindCallBack: function (fn, func_name) {

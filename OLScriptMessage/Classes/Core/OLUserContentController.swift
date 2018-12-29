@@ -38,6 +38,7 @@ open class OLUserContentController: WKUserContentController {
 
     public func addScriptMessageManager(_ scriptMessageManager: OLScriptMessageManager) {
         for (name, operation) in scriptMessageManager.operations {
+            print("add ScriptMessageOperation \(operation.self) name \(name)  scriptName \(operation.loadJSScriptContent())")
             if let userScript = operation.userScript {
                 self.addUserScript(userScript)
             }

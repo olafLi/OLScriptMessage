@@ -80,13 +80,15 @@ extension ScriptMessageRegistable {
     }
 
     public func loadJSScriptContent() -> String {
-        guard scriptMessageName.count > 0 else { return "" }
+        guard self.scriptMessageName.count > 0 else { return "" }
+        let scriptMessageName = self.scriptMessageName
         let source =  """
-        var \(self.scriptMessageName) = function (options, callback) {
-        var message = JKEventHandler.bindCallBack(this.\(self.scriptMessageName),\"\(self.scriptMessageName)\");
-        window.webkit.messageHandlers.\(self.scriptMessageName).postMessage(message);
+        var \(scriptMessageName) = function (options, callback) {
+        var message = JKEventHandler.bindCallBack(this.\(scriptMessageName),\"\(scriptMessageName)\");
+        window.webkit.messageHandlers.\(scriptMessageName).postMessage(message);
         }
-        window.cci.\(self.scriptMessageName) = \(self.scriptMessageName);
+        Object.assgin(window.cci,{ scriptMessage:\(scriptMessageName)});
+        //        window.cci.\(scriptMessageName) = \(scriptMessageName);
         """
         return source.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
     }
