@@ -12,7 +12,7 @@ import WebKit
 /// js 脚本交互参数
 public class OLScriptMessageContext {
 
-    var params: [String: Any] = [:]
+    public var params: [String: Any] = [:]
     var functionName: String?
     var callback: String?
     var viewController: UIViewController?
@@ -35,7 +35,7 @@ public class OLScriptMessageContext {
 
     var response: [String: Any]
 
-    func response( value: Any?, key: String) {
+    public func response( value: Any?, key: String) {
         response[key] = value
     }
 

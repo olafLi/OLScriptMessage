@@ -21,4 +21,9 @@ import UIKit
         self.contentController?.navigationController?.popViewController(animated: true)
 
     }
+
+    static func autoRegisterable() -> Bool {
+        return false
+    }
+
 }

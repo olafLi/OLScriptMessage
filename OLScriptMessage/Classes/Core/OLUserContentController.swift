@@ -18,6 +18,7 @@ open class OLUserContentController: WKUserContentController {
     //获取支持callback 模式的javascript userscript
     private var defaultCallbackSupportorUserScript: WKUserScript? {
         guard let commonJSURL = self.defaultCallbackSupportorJsUrl, let data = NSData(contentsOf: commonJSURL) else { return nil }
+        assert(data != nil)
         var jsString: String = NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue)! as String
         jsString = jsString.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
         var script = WKUserScript(source: jsString, injectionTime: WKUserScriptInjectionTime.atDocumentStart, forMainFrameOnly: false)

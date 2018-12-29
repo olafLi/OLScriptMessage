@@ -35,18 +35,29 @@ public protocol ScriptMessageOperator {
  自注册协议
  */
 public protocol ScriptMessageRegistable {
-    static var autoRegisterable: Bool { get }
+    static func autoRegisterable() -> Bool
     static var registedManager: OLScriptMessageManager? { get }
     static func defaultRegister()
 }
 
-@objc open class OLScriptMessageOperation: NSObject, ScriptMessageOperator {
+extension ScriptMessageRegistable {
+
+    public static func autoRegisterable() -> Bool {
+        return true
+    }
+
+    public static var registedManager: OLScriptMessageManager? {
+        return nil
+    }
+}
+
+@objc open class OLScriptMessageOperation: NSObject, ScriptMessageOperator , ScriptMessageRegistable {
 
     public var contentController: UIViewController? {
         return self.context?.viewController
     }
 
-    public func execute(_ context: OLScriptMessageContext, scriptMessageName: String, executeCompletion: @escaping (OLScriptMessageContext) -> Void) {
+    open func execute(_ context: OLScriptMessageContext, scriptMessageName: String, executeCompletion: @escaping (OLScriptMessageContext) -> Void) {
         self.context = context
         self.executeCompletion = executeCompletion
     }
@@ -79,6 +90,12 @@ public protocol ScriptMessageRegistable {
         """
         return source.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
     }
+
+    public static func defaultRegister() {
+        OLScriptMessageManager.shared.register(operation: self.init())
+        print("register operation:\(type(of: self)) and \(self.init().scriptMessageName)")
+    }
+
 }
 
 extension OLScriptMessageOperation {
@@ -101,20 +118,3 @@ extension OLScriptMessageOperation {
 
 }
 
-extension OLScriptMessageOperation: ScriptMessageRegistable {
-
-    public static func defaultRegister() {
-        let registerManager = self.registedManager ?? OLScriptMessageManager.shared
-        registerManager.register(operation: self.init())
-        print("\(type(of: registerManager).description()) register operation:\(type(of: self)) and \(self.init().scriptMessageName)")
-    }
-
-    public class var autoRegisterable: Bool {
-        return true
-    }
-
-    public class var registedManager: OLScriptMessageManager? {
-        return nil
-    }
-
-}
