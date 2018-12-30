@@ -87,8 +87,7 @@ extension ScriptMessageRegistable {
         var message = JKEventHandler.bindCallBack(this.\(scriptMessageName),\"\(scriptMessageName)\");
         window.webkit.messageHandlers.\(scriptMessageName).postMessage(message);
         }
-        Object.assgin(window.cci,{ scriptMessage:\(scriptMessageName)});
-        //        window.cci.\(scriptMessageName) = \(scriptMessageName);
+        window.client.\(scriptMessageName) = \(scriptMessageName);
         """
         return source.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
     }
@@ -110,7 +109,7 @@ extension OLScriptMessageOperation {
         var message = JKEventHandler.bindCallBack(this.\(self.scriptMessageName),\"\(self.scriptMessageName)\");
         window.webkit.messageHandlers.\(self.scriptMessageName).postMessage(message);
         }
-        window.cci.\(self.scriptMessageName) = \(self.scriptMessageName);
+        window.client.\(self.scriptMessageName) = \(self.scriptMessageName);
         """
 
         let source = mould.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)

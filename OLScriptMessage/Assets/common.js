@@ -1,4 +1,4 @@
-window.cci = {}
+window.client = {}
 
 var JKEventHandler = {
     bindCallBack: function (fn, func_name) {
