@@ -325,7 +325,6 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-OLScriptMessage_Example/Pods-OLScriptMessage_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/OLScriptMessage/OLScriptMessage.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyLoad/SwiftyLoad.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -333,7 +332,6 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OLScriptMessage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyLoad.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

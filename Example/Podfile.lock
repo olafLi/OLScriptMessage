@@ -1,26 +1,12 @@
 PODS:
-  - OLScriptMessage (0.1.0):
-    - OLScriptMessage/Authorization (= 0.1.0)
-    - OLScriptMessage/Media (= 0.1.0)
-    - OLScriptMessage/Navigation (= 0.1.0)
-    - SwiftyLoad
-  - OLScriptMessage/Authorization (0.1.0):
-    - SwiftyLoad
-  - OLScriptMessage/Media (0.1.0):
-    - SwiftyLoad
-  - OLScriptMessage/Navigation (0.1.0):
-    - SwiftyLoad
+  - OLScriptMessage (0.2.0)
   - SnapKit (4.0.1)
-  - SwiftyLoad (0.1.0)
 
 DEPENDENCIES:
   - OLScriptMessage (from `../`)
-  - OLScriptMessage/Navigation (from `../`)
   - SnapKit
 
 SPEC REPOS:
-  https://git.citycloud.com.cn:3000/litengfei_winkind-tech.com/WKSpecs.git:
-    - SwiftyLoad
   https://github.com/cocoapods/specs.git:
     - SnapKit
 
@@ -29,10 +15,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  OLScriptMessage: bcf596a47734e06c76912679f392046d511703ed
+  OLScriptMessage: cb5dd676fc914d07b1bf14cd08dc55cb668d1283
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
-  SwiftyLoad: 663a1c8e09edd507e8c75f1e6653d8c7184d1d70
 
-PODFILE CHECKSUM: 23206ef834f5ae5785134f92a84c801244aec947
+PODFILE CHECKSUM: 271694253e4f6b9964da561e2eb03e610c8b86f8
 
 COCOAPODS: 1.5.3

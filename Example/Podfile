@@ -10,7 +10,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'OLScriptMessage_Example' do
 
   pod 'OLScriptMessage', :path => '../'
-  pod 'OLScriptMessage/Navigation', :path => '../'
 
   pod 'SnapKit'
 
