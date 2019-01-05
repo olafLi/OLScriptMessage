@@ -15,7 +15,7 @@ public class OLScriptMessageContext {
     public var params: [String: Any] = [:]
     var functionName: String?
     var callback: String?
-    var viewController: UIViewController?
+    public var viewController: UIViewController?
 
     init(_ message: WKScriptMessage) {
 

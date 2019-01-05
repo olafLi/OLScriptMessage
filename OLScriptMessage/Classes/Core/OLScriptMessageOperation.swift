@@ -79,18 +79,18 @@ extension ScriptMessageRegistable {
         return self.defaultUserScript
     }
 
-    public func loadJSScriptContent() -> String {
-        guard self.scriptMessageName.count > 0 else { return "" }
-        let scriptMessageName = self.scriptMessageName
-        let source =  """
-        var \(scriptMessageName) = function (options, callback) {
-        var message = JKEventHandler.bindCallBack(this.\(scriptMessageName),\"\(scriptMessageName)\");
-        window.webkit.messageHandlers.\(scriptMessageName).postMessage(message);
-        }
-        window.client.\(scriptMessageName) = \(scriptMessageName);
-        """
-        return source.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
-    }
+//    public func loadJSScriptContent() -> String {
+//        guard self.scriptMessageName.count > 0 else { return "" }
+//        let scriptMessageName = self.scriptMessageName
+//        let source =  """
+//        var \(scriptMessageName) = function (options, callback) {
+//        var message = JKEventHandler.bindCallBack(this.\(scriptMessageName),\"\(scriptMessageName)\");
+//        window.webkit.messageHandlers.\(scriptMessageName).postMessage(message);
+//        }
+//        window.client.\(scriptMessageName) = \(scriptMessageName);
+//        """
+//        return source.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
+//    }
 
     public static func defaultRegister() {
         OLScriptMessageManager.shared.register(operation: self.init())

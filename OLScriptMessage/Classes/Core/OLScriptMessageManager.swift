@@ -130,6 +130,7 @@ extension OLScriptMessageManager: WKScriptMessageHandler {
         let executeCompletion: ExecuteCompletion = { context in
             context.send(self)
         }
+        operation_temp.context = context
         operation_temp.executeCompletion = executeCompletion
         operation_temp.execute(context, scriptMessageName: message.name, executeCompletion: executeCompletion)
     }
@@ -150,8 +151,8 @@ extension OLScriptMessageManager: WKSCriptCallBackable {
         }
         let jsString = "JKEventHandler.callBack('\(name)',\(object))"
         if let web = self.web {
+            print("web will run javascript: \(jsString)")
             web.evaluateJavaScript(jsString, completionHandler: nil)
         }
-
     }
 }
