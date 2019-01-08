@@ -30,6 +30,12 @@ public protocol ScriptMessageOperator {
     func execute(_ context: OLScriptMessageContext, scriptMessageName: String, executeCompletion: @escaping ExecuteCompletion)
 
 }
+
+extension ScriptMessageOperator {
+    public func loadJSScriptContent() -> String {
+        return ""
+    }
+}
 /*
  Operation
  自注册协议
