@@ -51,7 +51,7 @@ open class OLScriptMessageManager: NSObject {
     /**
      delegate
      **/
-    public var delegate: OLScriptMessageManagerDelegate?
+    public weak var delegate: OLScriptMessageManagerDelegate?
     /*
      共用OLScriptMessageManager
      **/
