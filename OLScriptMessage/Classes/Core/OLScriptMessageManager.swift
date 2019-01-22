@@ -118,7 +118,7 @@ extension OLScriptMessageManager: WKScriptMessageHandler {
         //设置上下文操作 viewController
         context.viewController = self.contentController
 
-        //如果交互接口已经注册 执行操作  否则
+        //如果交互接口已经注册 执行操作 
         guard let operation = operations[message.name] else {
             #if DEBUG
             assertionFailure("operation named \(message.name) is not registed . please check code and register operation with \(message.name)")
