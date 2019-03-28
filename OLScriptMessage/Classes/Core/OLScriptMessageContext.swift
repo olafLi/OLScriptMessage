@@ -13,6 +13,7 @@ import WebKit
 public class OLScriptMessageContext {
 
     public var params: [String: Any] = [:]
+    public var showLogs: Bool = true
     var functionName: String?
     var callback: String?
     public var viewController: UIViewController?
