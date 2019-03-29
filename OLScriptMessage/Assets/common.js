@@ -1,5 +1,7 @@
 window.client = {}
 
+const CCIClient = {}
+
 var JKEventHandler = {
     bindCallBack: function (fn, func_name) {
         var message = {};

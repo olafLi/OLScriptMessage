@@ -116,6 +116,7 @@ extension OLScriptMessageOperation {
         window.webkit.messageHandlers.\(self.scriptMessageName).postMessage(message);
         }
         window.client.\(self.scriptMessageName) = \(self.scriptMessageName);
+        CCIClient.\(self.scriptMessageName) = \(self.scriptMessageName);
         """
 
         let source = mould.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
