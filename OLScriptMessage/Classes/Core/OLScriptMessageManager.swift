@@ -74,18 +74,12 @@ open class OLScriptMessageManager: NSObject {
             guard let superClass = class_getSuperclass(someClass), someClass is OLScriptMessageOperation.Type else {
                 continue
             }
-            //
+
             guard let cls = someClass as? OLScriptMessageOperation.Type else { continue }
-            //operation 是否支持自动注册
+
             if cls.autoRegisterable() {
-                //如果 operations  设置了 register manager 设置为 此 manager 注册到当前 manager 中
-                //否则执行operation  默认注册方法 defaultRegister()
-                //fix 这里逻辑设计不是很友好  以后有好的方法再改进
-                if cls.registedManager == self {
-                    self.register(operation: cls.init())
-                } else {
-                    cls.defaultRegister()
-                }
+                //operation 自动注册
+                self.register(operation: cls.init())
             }
         }
     }
@@ -153,6 +147,15 @@ extension OLScriptMessageManager: WKSCriptCallBackable {
         if let web = self.web {
             print("web will run javascript: \(jsString)")
             web.evaluateJavaScript(jsString, completionHandler: nil)
+        }
+    }
+}
+
+extension OLScriptMessageManager {
+    public func defaultAutoRunner(operation:ScriptMessageOperator) {
+        let defaultAutoRunnerJs = operation.defaultAutoRunnerJS()
+        if defaultAutoRunnerJs.count > 0 {
+            self.web?.evaluateJavaScript(defaultAutoRunnerJs, completionHandler: nil)
         }
     }
 }

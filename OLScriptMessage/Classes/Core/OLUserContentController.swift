@@ -41,6 +41,7 @@ open class OLUserContentController: WKUserContentController {
             if let userScript = operation.userScript {
                 self.addUserScript(userScript)
             }
+            scriptMessageManager.defaultAutoRunner(operation: operation)
             self.add(scriptMessageManager, name: name)
         }
     }

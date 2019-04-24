@@ -23,6 +23,7 @@ public protocol ScriptMessageOperator {
      加载本操作对应的 js
      **/
     var userScript: WKUserScript? { get }
+    func defaultAutoRunnerJS() -> String
     func loadJSScriptContent() -> String
     /**
      执行本接口是进行的本地操作
@@ -35,6 +36,9 @@ extension ScriptMessageOperator {
     public func loadJSScriptContent() -> String {
         return ""
     }
+    public func defaultAutoRunnerJS() -> String {
+        return ""
+    }
 }
 /*
  Operation
@@ -43,7 +47,8 @@ extension ScriptMessageOperator {
 public protocol ScriptMessageRegistable {
     static func autoRegisterable() -> Bool
     static var registedManager: OLScriptMessageManager? { get }
-    static func defaultRegister()
+
+//    static func defaultRegister()
 }
 
 extension ScriptMessageRegistable {
@@ -85,23 +90,10 @@ extension ScriptMessageRegistable {
         return self.defaultUserScript
     }
 
-//    public func loadJSScriptContent() -> String {
-//        guard self.scriptMessageName.count > 0 else { return "" }
-//        let scriptMessageName = self.scriptMessageName
-//        let source =  """
-//        var \(scriptMessageName) = function (options, callback) {
-//        var message = JKEventHandler.bindCallBack(this.\(scriptMessageName),\"\(scriptMessageName)\");
-//        window.webkit.messageHandlers.\(scriptMessageName).postMessage(message);
-//        }
-//        window.client.\(scriptMessageName) = \(scriptMessageName);
-//        """
-//        return source.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
+//    public static func defaultRegister() {
+//        OLScriptMessageManager.shared.register(operation: self.init())
+//        print("register operation:\(type(of: self)) and \(self.init().scriptMessageName)")
 //    }
-
-    public static func defaultRegister() {
-        OLScriptMessageManager.shared.register(operation: self.init())
-        print("register operation:\(type(of: self)) and \(self.init().scriptMessageName)")
-    }
 
 }
 
