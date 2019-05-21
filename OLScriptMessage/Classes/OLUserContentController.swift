@@ -32,6 +32,11 @@ open class OLUserContentController: WKUserContentController {
         }
     }
 
+	convenience public init(_ messageManager:OLScriptMessageManager) {
+		self.init()
+		self.addScriptMessageManager(messageManager)
+	}
+
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

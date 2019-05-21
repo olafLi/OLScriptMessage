@@ -4,21 +4,16 @@ inhibit_all_warnings!
 use_frameworks!
 platform :ios, '9.0'
 
-source 'https://git.citycloud.com.cn:3000/litengfei_winkind-tech.com/WKSpecs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'OLScriptMessage_Example' do
 
-  pod 'OLScriptMessage', :path => '../'
+	pod 'OLScriptMessage', :path => '../'
+	pod 'SnapKit'
 
-  pod 'SnapKit'
-
-  target 'OLScriptMessage_Tests' do
-    inherit! :search_paths
-
-#    pod 'Quick', '~> 1.2.0'
-#    pod 'Nimble', '~> 7.0.2'
-#    pod 'FBSnapshotTestCase' , '~> 2.1.4'
-#    pod 'Nimble-Snapshots' , '~> 6.3.0'
-  end
+	target 'OLScriptMessage_Tests' do
+		inherit! :search_paths
+#		pod 'Quick', '~> 1.2.0'
+#		pod 'Nimble', '~> 7.0.2'
+	end
 end
