@@ -1,3 +1,4 @@
+window = {}
 window.client = {}
 
 const CCIClient = {}
