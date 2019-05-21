@@ -1,31 +1,52 @@
-
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />-->
-<!--    <script src="main.js"></script>-->
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Page Title</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<style>
+		button {
+			margin-top: 60px;
+			margin-left: 20%;
+			width: 60%;
+			height: 80px;
+			align-items: center;
+			background-color: red;
+		}
 
-    <style>
-    button{
-        width:  200px;
-        height: 200px;
-        background-color:  red;
-    }
-    </style>
+		#text {
+			margin-left: 20%;
+			width: 60%;
+			height: 200px;
+			width: 100%;
+			align-items: center;
+		}
+	</style>
 
-    <script>
-        function media_share(){
-            window.cci.media_share({content:"http://www.baidu.com"},function(response){
-
-            });
-        }
-    </script>
+	<script>
+		function text() {
+			window.client.text({
+					content: 'http://www.baidu.com',
+				},
+				function (response) {
+					let data = response
+					document.getElementById('text').innerText = [
+						document.getElementById('text').innerText,
+						JSON.stringify(data),
+					].join('\n')
+				}
+			)
+		}
+	</script>
 </head>
+
 <body>
-<button onclick="media_share()">分享</button>
+	<button onclick="text()">文本</button>
+	<div id="text">
+		123123
+	</div>
 </body>
+
 </html>

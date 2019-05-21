@@ -89,12 +89,7 @@ extension ScriptMessageRegistable {
     public var userScript: WKUserScript? {
         return self.defaultUserScript
     }
-
-//    public static func defaultRegister() {
-//        OLScriptMessageManager.shared.register(operation: self.init())
-//        print("register operation:\(type(of: self)) and \(self.init().scriptMessageName)")
-//    }
-
+	
 }
 
 extension OLScriptMessageOperation {
@@ -108,7 +103,7 @@ extension OLScriptMessageOperation {
         window.webkit.messageHandlers.\(self.scriptMessageName).postMessage(message);
         }
         window.client.\(self.scriptMessageName) = \(self.scriptMessageName);
-        CCIClient.\(self.scriptMessageName) = \(self.scriptMessageName);
+        JSMessage.\(self.scriptMessageName) = \(self.scriptMessageName);
         """
 
         let source = mould.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)

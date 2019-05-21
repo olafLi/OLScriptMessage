@@ -9,13 +9,16 @@
 import UIKit
 import WebKit
 
-/// js 脚本交互参数
+/**
+js 脚本交互上下文
+**/
+
 public class OLScriptMessageContext {
 
     public var params: [String: Any] = [:]
     public var showLogs: Bool = true
-    var functionName: String?
-    var callback: String?
+    private(set) var functionName: String = ""
+    private(set) var callback: String = ""
     public var viewController: UIViewController?
 
     init(_ message: WKScriptMessage) {
@@ -34,13 +37,13 @@ public class OLScriptMessageContext {
         self.functionName = maps["func_name"] as? String ?? ""
     }
 
-    var response: [String: Any]
+	var response: [String: Any] = [:]
 
     public func response( value: Any?, key: String) {
         response[key] = value
     }
 
     func send(_ sender: WKSCriptCallBackable) {
-        sender.callback(callback!, response: response)
+        sender.callback(callback, response: response)
     }
 }
