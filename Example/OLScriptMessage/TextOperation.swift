@@ -19,6 +19,5 @@ class TextOperation: OLScriptMessageOperation {
 			context.response(value: value, key: key)
 		}
 		executeCompletion(context)
-
 	}
 }
